@@ -9,7 +9,9 @@
     {
         <li>
             <h3>@tree.Name</h3>
-            <button @onclick="() => AddCompliment(tree.Id)">Compliment me!</button>
+            <input @bind="tree.InputBox"/>
+
+            <button @onclick="() => AddCompliment(tree.Id,tree.InputBox)">Compliment me!</button>
             <ul>
                 @foreach (var compliments in tree.Compliments)
                 {
@@ -27,6 +29,7 @@
 
 @using Complimentree.DataModels;
 
+
     List<Tree> trees = new List<Tree>
     {
         new Tree(1, "Oakley", (12, 45), "Large", "Oak"),
@@ -37,12 +40,17 @@
     };
 
 
-    private void AddCompliment(int id)
+
+
+    private void AddCompliment(int id , string text)
     {
         Tree tree = trees.FirstOrDefault(x => x.Id == id);
         int newId = tree.Compliments.Any() ? trees.Max(x => x.Id) + 1 : 1;
+        string desc = string.IsNullOrEmpty(text) ? Compliment.GetCompliment() : text;
+        Compliment compliment = new Compliment(newId, desc);
 
-        tree.Compliments.Add(new Compliment(newId,Compliment.GetCompliment()));
+        tree.InputBox = "";
+        tree.Compliments.Add(compliment);
 
     }
 
