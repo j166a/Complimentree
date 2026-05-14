@@ -1,10 +1,23 @@
-﻿<h2>Trees</h2>
+﻿@rendermode InteractiveServer
+
+<h2>Trees</h2>
+
+
 
 <ul>
     @foreach (var tree in trees)
     {
         <li>
             <h3>@tree.Name</h3>
+            <button @onclick="() => AddCompliment(tree.Id)">Compliment me!</button>
+            <ul>
+                @foreach (var compliments in tree.Compliments)
+                {
+                    <li>
+                        <p>@compliments.Text</p>
+                    </li>
+                }
+            </ul>
         </li>
     }
 
@@ -14,58 +27,24 @@
 
 @using Complimentree.DataModels;
 
-	List<Tree> trees = new List<Tree>
+    List<Tree> trees = new List<Tree>
     {
-        new Tree
-        {
-            Id = 1,
-            Name = "Oakley",
-            Location = (12, 45),
-            Size = "Large",
-            Species = "Oak",
-            Compliments = new List<Compliment>()
-        },
-
-        new Tree
-        {
-            Id = 2,
-            Name = "Willow Whisper",
-            Location = (30, 18),
-            Size = "Medium",
-            Species = "Willow",
-            Compliments = new List<Compliment>()
-        },
-
-        new Tree
-        {
-            Id = 3,
-            Name = "Pine Prime",
-            Location = (7, 60),
-            Size = "Tall",
-            Species = "Pine",
-            Compliments = new List<Compliment>()
-        },
-
-        new Tree
-        {
-            Id = 4,
-            Name = "Cherry Bloom",
-            Location = (25, 33),
-            Size = "Small",
-            Species = "Cherry Blossom",
-            Compliments = new List<Compliment>()
-        },
-
-        new Tree
-        {
-            Id = 5,
-            Name = "Maple Majesty",
-            Location = (50, 10),
-            Size = "Medium",
-            Species = "Maple",
-            Compliments = new List<Compliment>()
-        }
+        new Tree(1, "Oakley", (12, 45), "Large", "Oak"),
+        new Tree(2, "Willow Whisper", (30, 18), "Medium", "Willow"),
+        new Tree(3, "Pine Prime", (7, 60), "Tall", "Pine"),
+        new Tree(4, "Cherry Bloom", (25, 33), "Small", "Cherry Blossom"),
+        new Tree(5, "Maple Majesty", (50, 10), "Medium", "Maple")
     };
+
+
+    private void AddCompliment(int id)
+    {
+        Tree tree = trees.FirstOrDefault(x => x.Id == id);
+        int newId = tree.Compliments.Any() ? trees.Max(x => x.Id) + 1 : 1;
+
+        tree.Compliments.Add(new Compliment(newId,Compliment.GetCompliment()));
+
+    }
 
 
 

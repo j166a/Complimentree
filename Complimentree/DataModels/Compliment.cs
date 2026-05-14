@@ -5,6 +5,12 @@
         public int Id { get; set; }
         public string Text { get; set; }
 
+        public Compliment(int id, string text)
+        {
+            Id = id;
+            Text = text;
+        }
+
         public static string GetCompliment()
         {
             Random rand = new Random();
